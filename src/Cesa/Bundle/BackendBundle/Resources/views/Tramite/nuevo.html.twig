@@ -1,0 +1,165 @@
+{% extends '::backend.html.twig' %}
+
+{% block navprin %}
+    <li><a href="#">Perfil</a></li>
+    <li><a href="{{ path('backend_logout') }}">Cerrar Sesion</a></li>
+{% endblock %}
+
+{% block nevegacion %}
+    <li><a href="{{ path('backend_home') }}">Inicio</a></li>
+    <li><a href="{{ path('backend_empleado_home') }}">Empleado</a></li>
+    <li><a href="{{ path('backend_cliente_home') }}">Cliente</a></li>
+    <li><a href="{{ path('backend_documento_home') }}">Documento</a></li>
+    <li class="active"><a href="{{ path('backend_tramite_home') }}">Tramite</a></li>
+
+
+{% endblock %}
+
+{% block contenido %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Registro de Tramite</h3>
+                </div>
+                <br>
+                <form class="form-horizontal" action="{{ path('backend_tramite_nuevo') }}" method="POST" {{ form_enctype(form) }} class="form-horizontal" role="form">
+                    {{ form_errors(form) }}
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">Numero Interno</label>
+                        <div class="col-sm-3">
+                            {{ form_errors(form.numInterno) }}
+                            {{ form_widget(form.numInterno, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">Numero de Carpeta</label>
+                        <div class="col-sm-3">
+                            {{ form_errors(form.numCarpeta) }}
+                            {{ form_widget(form.numCarpeta, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input" class="col-sm-3 control-label">Tipo</label>
+                        <div class="col-sm-3">
+                            {{ form_errors(form.tipo) }}
+                            {{ form_widget(form.tipo, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input" class="col-sm-3 control-label">Cliente</label>
+                        <div class="col-sm-4">
+                            <div id="resultadocliente"></div>
+                            {{ form_errors(form.cliente) }}
+                            {{ form_widget(form.cliente) }}
+                        </div>
+                        <button class="btn btn-warning" data-toggle="modal" data-target="#myModal">Buscar</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">Placa</label>
+                        <div class="col-sm-3">
+                            {{ form_errors(form.placa) }}
+                            {{ form_widget(form.placa, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">Canal</label>
+                        <div class="col-sm-8">
+                            {{ form_errors(form.canal) }}
+                            {{ form_widget(form.canal, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">Vista</label>
+                        <div class="col-sm-8">
+                            {{ form_errors(form.vista) }}
+                            {{ form_widget(form.vista, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">Aforo</label>
+                        <div class="col-sm-8">
+                            {{ form_errors(form.aforo) }}
+                            {{ form_widget(form.aforo, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">Levante</label>
+                        <div class="col-sm-8">
+                            {{ form_errors(form.levante) }}
+                            {{ form_widget(form.levante, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3"></div><button type="submit" class="btn btn-primary">Guardar</button>
+                    {{ form_widget(form) }}
+                </form>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-3"></div>
+                        <form id="buscarcliente" class="form-inline" role="form">
+                            <div class="form-group">
+                                <input id="valbusqueda" name="busqueda" type="text" class="form-control" placeholder="Buscar Cliente">
+                            </div>
+                            <button type="submit" class="btn btn-default">Buscar</button>
+                        </form>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div id="mensajecliente"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function(){
+            $("#buscarcliente").submit(function() {
+
+                $.ajax({
+                    type: "POST",
+                    url: '{{ path("backend_tramite_bcliente") }}', // Or your url generator like Routing.generate('discussion_create')
+                    data: $(this).serialize(),
+                    success: function(data){
+                        if(data.nombre != null)
+                        {
+                            $('#cesa_backend_cliente_cliente').val(data.documento);
+                            $('#resultadocliente').html(data.nombre);
+                            $('#mensajecliente').html('<div class="alert alert-success">Cliente encontrado, se agrego al formulario</div>');
+                        }
+                        else
+                        {
+                            $('#cesa_backend_cliente_cliente').val('');
+                            $('#resultadocliente').html('');
+                            $('#mensajecliente').html('<div class="alert alert-warning">Cliente no encontrado, revise el numero de documento ingresado</div>');
+                        }
+                    }
+                });
+
+                return false;
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,7 @@
+backend_documento_home:
+  pattern:  /
+  defaults: { _controller: BackendBundle:Documento:index }
+
+backend_documento_nuevo:
+  pattern:  /nuevo
+  defaults: { _controller: BackendBundle:Documento:nuevo }

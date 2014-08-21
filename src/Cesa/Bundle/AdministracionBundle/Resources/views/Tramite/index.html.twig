@@ -1,0 +1,80 @@
+{% extends '::administracion.html.twig' %}
+
+
+{% block navprin %}
+    <li><a href="#">Perfil</a></li>
+    <li><a href="{{ path('empleado_logout') }}">Cerrar Sesion</a></li>
+{% endblock %}
+
+{% block nevegacion %}
+    <li><a href="{{ path('empleado_home') }}">Inicio</a></li>
+    {% if usuario.cargo == 'CAJERO' %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Flujo de Efectivo<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">Buscar Tramite</a></li>
+                <li><a href="#">Buscar Cliente</a></li>
+                <li><a href="">Realizar Egreso</a></li>
+                <li><a href="">Realizar Ingreso</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Reporte Movimientos del Dia</a></li>
+                <li><a href="#">Reporte Movimientos</a></li>
+            </ul>
+        </li>
+    {% else%}
+        {% if usuario.cargo == 'ADMINISTRADOR' %}
+            <li><a href="{{ path('empleado_cliente_home') }}">Cliente</a></li>
+        {% endif %}
+        <li class="active"><a href="{{ path('empleado_tramite_home') }}">Tramite</a></li>
+    {% endif %}
+{% endblock %}
+
+{% block contenido %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Buscar Tramite">
+                </div>
+                <button type="submit" class="btn btn-default">Buscar</button>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-2">
+            {% if usuario.cargo == 'ADMINISTRADOR' %}
+                <a type="button" class="btn btn-primary" href="{{ path('empleado_tramite_nuevo') }}">Nuevo Tramite</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <h3>Lista de Tramites</h3>
+
+        <table class="table striped-table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Numero Interno</th>
+                <th>Numero Carpeta</th>
+                <th>Cliente</th>
+                <th>Fecha de Recepcion</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.tramite.id }}</td>
+                    <td>{{ entity.tramite.numeroInterno }}</td>
+                    <td>{{ entity.tramite.numeroCarpeta }}</td>
+                    <td>{{ entity.tramite.cliente }}</td>
+                    <td>{{ entity.tramite.fechaInicio|date('d-m-Y') }}</td>
+                    <td>
+                        <a type="button" class="btn btn-warning" href="{{ path('empleado_tramite_ver', {'tramite_id': entity.tramite.id }) }}">Ver</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

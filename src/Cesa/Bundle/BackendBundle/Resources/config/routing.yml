@@ -1,0 +1,29 @@
+backend_home:
+  pattern:  /
+  defaults:   { _controller: BackendBundle:Default:index }
+
+backend_login:
+  pattern:  /login
+  defaults:   { _controller: BackendBundle:Default:login }
+
+backend_login_check:
+  pattern:  /login_check
+
+backend_logout:
+  pattern:  /logout
+
+backend_empleado:
+  resource: "@BackendBundle/Resources/config/routing/empleado.yml"
+  prefix:   /empleado
+
+backend_cliente:
+  resource: "@BackendBundle/Resources/config/routing/cliente.yml"
+  prefix:   /cliente
+
+backend_documento:
+  resource: "@BackendBundle/Resources/config/routing/documento.yml"
+  prefix:   /documento
+
+backend_tramite:
+  resource: "@BackendBundle/Resources/config/routing/tramite.yml"
+  prefix:   /tramite

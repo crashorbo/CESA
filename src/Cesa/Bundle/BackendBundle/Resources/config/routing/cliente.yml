@@ -1,0 +1,11 @@
+backend_cliente_home:
+  pattern:  /
+  defaults: { _controller: BackendBundle:Cliente:index }
+
+backend_cliente_nuevo:
+  pattern:  /nuevo
+  defaults: { _controller: BackendBundle:Cliente:nuevo }
+
+backend_cliente_buscar:
+  pattern:  /buscar
+  defaults: { _controller: BackendBundle:Cliente:buscar }

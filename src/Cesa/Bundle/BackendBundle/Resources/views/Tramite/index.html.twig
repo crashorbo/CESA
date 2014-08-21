@@ -1,0 +1,72 @@
+{% extends '::backend.html.twig' %}
+
+
+{% block navprin %}
+    <li><a href="#">Perfil</a></li>
+    <li><a href="{{ path('backend_logout') }}">Cerrar Sesion</a></li>
+{% endblock %}
+
+{% block nevegacion %}
+    <li><a href="{{ path('backend_home') }}">Inicio</a></li>
+    <li><a href="{{ path('backend_empleado_home') }}">Empleado</a></li>
+    <li><a href="{{ path('backend_cliente_home') }}">Cliente</a></li>
+    <li><a href="{{ path('backend_documento_home') }}">Documento</a></li>
+    <li class="active"><a href="{{ path('backend_tramite_home') }}">Tramite</a></li>
+
+{% endblock %}
+
+{% block contenido %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Buscar Tramite">
+                </div>
+                <button type="submit" class="btn btn-default">Buscar</button>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-2">
+            <a type="button" class="btn btn-primary" href="{{ path('backend_tramite_nuevo') }}">Registrar Tramite</a>
+        </div>
+    </div>
+    <div class="row">
+        <h3>Lista de Tramites</h3>
+
+        <table class="table striped-table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombres</th>
+                <th>Apellido Paterno</th>
+                <th>Apellido Materno</th>
+                <th>Cargo</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.id }}</td>
+                    <td>{{ entity.numeroInterno }}</td>
+                    <td>{{ entity.numeroCarpeta }}</td>
+                    <td>{{ entity.cliente }}</td>
+                    <td>{{ entity.fechaInicio|date('d-m-Y') }}</td>
+                    <td>
+                        {% if entity.estado == 1 %}
+                            ACTIVO
+                        {% else %}
+                            DESACTIVADO
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a type="button" class="btn btn-warning" href="{{ path('backend_empleado_ver', { 'empleado_id': entity.id }) }}">Ver</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

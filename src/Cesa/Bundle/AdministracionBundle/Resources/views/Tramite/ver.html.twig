@@ -1,0 +1,354 @@
+{% extends '::administracion.html.twig' %}
+
+
+{% block navprin %}
+    <li><a href="#">Perfil</a></li>
+    <li><a href="{{ path('empleado_logout') }}">Cerrar Sesion</a></li>
+{% endblock %}
+
+{% block nevegacion %}
+    <li><a href="{{ path('empleado_home') }}">Inicio</a></li>
+    {% if usuario.cargo == 'CAJERO' %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Flujo de Efectivo<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">Buscar Tramite</a></li>
+                <li><a href="#">Buscar Cliente</a></li>
+                <li><a href="">Realizar Egreso</a></li>
+                <li><a href="">Realizar Ingreso</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Reporte Movimientos del Dia</a></li>
+                <li><a href="#">Reporte Movimientos</a></li>
+            </ul>
+        </li>
+    {% else%}
+        {% if usuario.cargo == 'ADMINISTRADOR' %}
+            <li><a href="{{ path('empleado_cliente_home') }}">Cliente</a></li>
+        {% endif %}
+        <li class="active"><a href="{{ path('empleado_tramite_home') }}">Tramite</a></li>
+    {% endif %}
+{% endblock %}
+
+{% block contenido %}
+    <div class="row">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-4">
+            {% if usuario.cargo == 'ADMINISTRADOR' or usuario.cargo == 'LIQUIDADOR' %}
+                <form class="form-inline" action="{{ path('empleado_tramite_remitir',{'id': entity.id}) }}" method="POST" {{ form_enctype(form) }} role="form">
+                    <div class="form-group">
+                        <label class="sr-only">Funcionarios</label>
+                        {{ form_errors(form2.funcionario) }}
+                        {{ form_widget(form2.funcionario, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    <button type="submit" class="btn btn-default">Enviar</button>
+                </form>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#documento" href="">Agregar Documento</a>
+            <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#gasto" href="">Agregar Gasto</a>
+            <a type="button" class="btn btn-primary" onclick="javascript:window.open('{{ path('empleado_tramite_imprimir', {'tramite_id': entity.id}) }}',null,'height=500,width=700,status=no,toolbar=no,menubar=no,location=no,scrollbars=yes');" href="#">Imprimir
+            </a>
+        </div>
+        <div class="col-md-2">
+
+        </div>
+
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Datos del Tramite</h3>
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td><b>Numero Interno: </b></td>
+                        <td>{{ entity.numeroInterno }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Numero de Carpeta: </b></td>
+                        <td>{{ entity.numeroCarpeta }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Tipo: </b></td>
+                        <td>{{ entity.tipo }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Cliente: </b></td>
+                        <td>{{ entity.cliente }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Placa: </b></td>
+                        <td>{{ entity.placa }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Numero de C: </b></td>
+                        <td>{{ entity.NumeroC }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Canal: </b></td>
+                        <td>{{ entity.canal }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Fecha de Validacion: </b></td>
+                        <td>{{ entity.fechaVC }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Vista: </b></td>
+                        <td>{{ entity.vista }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Aforo: </b></td>
+                        <td>{{ entity.aforo }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Levante: </b></td>
+                        <td>{{ entity.levante }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+        <div class="col-md-2">
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            {% if usuario.cargo == 'LIQUIDADOR' %}
+                <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#anexo1" href="">Complementar Datos</a>
+            {% endif %}
+
+            {% if usuario.cargo == 'TRAMITADOR' %}
+                <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#anexo2" href="">Complementar Datos</a>
+            {% endif %}
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Documentos Entregados</h3>
+                </div>
+                <table class="table">
+                    <thead>
+                        <th>Codigo</th>
+                        <th>Descripcion</th>
+                        <th>Fecha Presentacion</th>
+                        <th>tipo</th>
+                    </thead>
+                    {% for tramitedoc in entity.tramiteDocumentos %}
+                        <tr>
+                            <td>{{ tramitedoc.documento.codigo }}</b></td>
+                            <td>{{ tramitedoc.documento.descripcion }}</td>
+                            <td>{{ tramitedoc.fechaPresentacion | date('d-m-Y')}}</td>
+                            <td>{{ tramitedoc.tipoDocumento }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Gastos Realizados</h3>
+                </div>
+                <table class="table">
+                    <thead>
+                        <th>Detalle</th>
+                        <th>Fecha</th>
+                        <th>Monto</th>
+                    </thead>
+                    <tbody>
+                    {% for movimiento in entity.movimientos %}
+                        {% if movimiento.tipo == 'EGRESO' %}
+                            <tr>
+                                <td>{{ movimiento.detalle }}</td>
+                                <td>{{ movimiento.fechaCreacion | date('d-m-Y') }}</td>
+                                <td>{{ movimiento.monto }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="documento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Agregar Documento</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" action="{{ path('empleado_tramite_agregardoc', { 'id' : entity.id }) }}" method="POST" {{ form_enctype(form) }} role="form">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-4 control-label">Documento</label>
+                            <div class="col-sm-8">
+                                {{ form_errors(form.documento) }}
+                                {{ form_widget(form.documento, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-4 control-label">Tipo Documento</label>
+                            <div class="col-sm-4">
+                                {{ form_errors(form.tipoDocumento) }}
+                                {{ form_widget(form.tipoDocumento, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Agregar</button>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="gasto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Agregar Gasto</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" action="{{ path('empleado_tramite_agregargasto', { 'id' : entity.id }) }}" method="POST" {{ form_enctype(form1) }} role="form">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Descripcion</label>
+                            <div class="col-sm-10">
+                                {{ form_errors(form1.detalle) }}
+                                {{ form_widget(form1.detalle, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Monto</label>
+                            <div class="col-sm-4">
+                                {{ form_errors(form1.costo) }}
+                                {{ form_widget(form1.costo, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                            <label for="inputEmail3" class="col-sm-1 control-label">Bolivianos</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Agregar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    {% if usuario.cargo == 'LIQUIDADOR' %}
+    <!-- Modal -->
+    <div class="modal fade" id="anexo1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Complementar Datos</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" action="{{ path('empleado_tramite_anexo1', { 'id' : entity.id }) }}" method="POST" {{ form_enctype(form1) }} role="form">
+                        <div class="form-group">
+                            <label for="numeroc" class="col-sm-4 control-label">Numero de C</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="numeroc" class="form-control" id="numeroc" placeholder="Numero de C">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="canal" class="col-sm-4 control-label">Canal</label>
+                            <div class="col-sm-4">
+                                <select class="form-control" name="canal" id="canal">
+                                    <option value="AMARILLO">AMARILLO</option>
+                                    <option value="ROJO">ROJO</option>
+                                    <option value="VERDE">VERDE</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="fechac" class="col-sm-4 control-label">Fecha Validacion</label>
+                            <div class="col-sm-4">
+                                <input type="date" name="fechac" class="form-control" id="fechac">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Agregar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    {% endif %}
+
+    {% if usuario.cargo == 'TRAMITADOR' %}
+        <!-- Modal -->
+        <div class="modal fade" id="anexo2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Complementar Datos</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" action="{{ path('empleado_tramite_anexo2', { 'id' : entity.id }) }}" method="POST"  role="form">
+                            <div class="form-group">
+                                <label for="funcionario" class="col-sm-4 control-label">Vista</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="vista" class="form-control" id="funcionario" placeholder="Funcionario Aduana">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaaforo" class="col-sm-4 control-label">Fecha Aforo</label>
+                                <div class="col-sm-4">
+                                    <input type="date" name="fechaaforo" class="form-control" id="fechaaforo">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="fechalevante" class="col-sm-4 control-label">Fecha Levante</label>
+                                <div class="col-sm-4">
+                                    <input type="date" name="fechalevante" class="form-control" id="fechalevante">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Agregar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+{% endblock %}

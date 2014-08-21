@@ -1,0 +1,15 @@
+backend_empleado_home:
+  pattern:  /
+  defaults: { _controller: BackendBundle:Empleado:index }
+
+backend_empleado_nuevo:
+  pattern:  /nuevo
+  defaults: { _controller: BackendBundle:Empleado:nuevo }
+
+backend_empleado_ver:
+  pattern:  /ver/{empleado_id}
+  defaults: { _controller: BackendBundle:Empleado:ver }
+
+backend_empleado_buscar:
+  pattern:  /buscar
+  defaults: { _controller: BackendBundle:Empelado:buscar }

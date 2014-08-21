@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>CESA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cesa">
+    <meta name="author" content="Cesa">
+
+
+    <link href="{{ asset('bundles/bootstrap/css/magic-bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/bootstrap/css/navbar-fixed-top.css') }}" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+      <!-- Navbar
+        ================================================== -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <a href="{{ path('frontend_home') }}" class="navbar-brand">CESA</a>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="{{ path('cliente_home') }}">Cliente</a></li>
+              <li><a href="{{ path('empleado_home') }}">Empleado</a></li>
+              <li><a href="{{ path('backend_home') }}">Administrador</a></li>
+            </ul>
+          </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-6">
+                <p><h1>C.E.S.A</h1></p>
+                <p>Consultores Especializados en Servicios Aduaneros</p>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-4"></div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <img class="img-responsive" src="{{ asset('bundles/bootstrap/img/cesaimg.png') }}" alt="Responsive image">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <nav class="navbar navbar-default" >
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        {% block navegacion %}
+                        <li class="active"><a href="#">Inicio</a></li>
+                        <li><a href="#">Contactanos</a></li>
+                        {% endblock %}
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+        </div>
+        {% block contenido %}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="well well-lg">
+                    <h3>Atencion al Cliente</h3>
+                    <img class="img-responsive" src="{{ asset('bundles/bootstrap/img/atencioncliente.jpg') }}" alt="Responsive image">
+                    <br><br>
+                    <button type="button" class="btn btn-primary">Ver Mas</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="well well-lg">
+                    <h3>Servicios</h3>
+                    <img class="img-responsive" src="{{ asset('bundles/bootstrap/img/servicioaduanero.jpg') }}" alt="Responsive image">
+                    <br><br>
+                    <button type="button" class="btn btn-primary">Ver Mas</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="well well-lg">
+                    <h3>Informaciones</h3>
+                    <img class="img-responsive" src="{{ asset('bundles/bootstrap/img/informes.png') }}" alt="Responsive image">
+                    <br>
+                    <button type="button" class="btn btn-primary">Ver Mas</button>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="{{ asset('bundles/bootstrap/js/bootstrap.min.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<?php
+
+namespace Cesa\Bundle\AdministracionBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * EmpleadoTramite
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Cesa\Bundle\AdministracionBundle\Entity\EmpleadoTramiteRepository")
+ */
+class EmpleadoTramite
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="date")
+     */
+    private $fechaCreacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="date")
+     */
+    private $fechaModificacion;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="estado", type="boolean")
+     */
+    private $estado;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Cesa\Bundle\AdministracionBundle\Entity\Empleado")
+     */
+    protected $empleado;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Cesa\Bundle\TramiteBundle\Entity\Tramite")
+    */
+    protected $tramite;
+
+    
+}

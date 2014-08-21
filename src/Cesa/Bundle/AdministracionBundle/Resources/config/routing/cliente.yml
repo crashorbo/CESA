@@ -1,0 +1,7 @@
+empleado_cliente_home:
+  pattern:  /
+  defaults: { _controller: AdministracionBundle:Cliente:index }
+
+empleado_cliente_nuevo:
+  pattern:  /nuevo
+  defaults: { _controller: AdministracionBundle:Cliente:nuevo }

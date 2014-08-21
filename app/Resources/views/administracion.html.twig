@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>CESA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cesa">
+    <meta name="author" content="Cesa">
+
+    {% stylesheets  'bundles/bootstrap/css/magic-bootstrap.css'
+                    'bundles/bootstrap/css/navbar-fixed-top.css'
+                    'bundles/bootstrap/css/bootstrap-theme.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+
+<!-- Navbar
+  ================================================== -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <a href="{{ path('frontend_home') }}" class="navbar-brand">CESA</a>
+    <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                {% block navprin %}
+                    <li><a href="#">Cliente</a></li>
+                    <li><a href="#">Empleado</a></li>
+                {% endblock %}
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <p><h1>C.E.S.A</h1></p>
+            <p>Consultores Especializados en Servicios Aduaneros</p>
+        </div>
+
+        <div class="col-md-4">
+            <br><br><br><br><br>
+            {% if not is_granted('ROLE_CLIENTE') %}
+                <p><b>Usuario: </b>{{usuario.username}}</p>
+                <p><b>Cargo: </b>{{ usuario.cargo }}</p>
+            {% else %}
+                <p><b>Usuario: </b>{{usuario}}</p>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+                <img class="img-responsive" src="{{ asset('bundles/bootstrap/img/cesaimg.png') }}" alt="Responsive image">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <nav class="navbar navbar-default" >
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    {% block nevegacion %}
+                        <li class="active"><a href="#">Inicio</a></li>
+                        <li><a href="#">Cliente</a></li>
+                    {% endblock %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </nav>
+    </div>
+    <div class="row">
+        <div class="row">
+            {% for notice_level in ['success','error','info', 'warning'] %}
+                {% set session_var = 'smtc_' ~ notice_level %}
+                {% if app.session.flashbag.has(session_var) %}
+                    <div class="alert {{ 'alert-' ~ notice_level }}">
+                        {% for flash in app.session.flashbag.get(session_var) %}
+                            <p>{{ flash|raw }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% block contenido %}
+
+        {% endblock %}
+    </div>
+</div>
+{% javascripts  'bundles/bootstrap/js/jquery-1.10.2.min.js'
+                'bundles/bootstrap/js/bootstrap.min.js'%}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% block js %}{% endblock %}
+</body>
+</html>

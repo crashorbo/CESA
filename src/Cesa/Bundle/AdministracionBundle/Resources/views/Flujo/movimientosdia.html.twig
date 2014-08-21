@@ -1,0 +1,68 @@
+{% extends '::administracion.html.twig' %}
+
+
+{% block navprin %}
+    <li><a href="#">Perfil</a></li>
+    <li><a href="{{ path('empleado_logout') }}">Cerrar Sesion</a></li>
+{% endblock %}
+
+{% block nevegacion %}
+    <li><a href="{{ path('empleado_home') }}">Inicio</a></li>
+    {% if usuario.cargo == 'CAJERO' %}
+        <li class="dropdown active">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Flujo de Efectivo<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="{{ path('tramite_flujo_buscar') }}">Buscar Tramite</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ path('tramite_flujo_movimientosdia') }}">Reporte Movimientos del Dia</a></li>
+
+            </ul>
+        </li>
+    {% else%}
+        {% if usuario.cargo == 'ADMINISTRADOR' %}
+            <li><a href="{{ path('empleado_cliente_home') }}">Cliente</a></li>
+        {% endif %}
+        <li><a href="{{ path('empleado_tramite_home') }}">Tramite</a></li>
+    {% endif %}
+{% endblock %}
+
+{% block contenido %}
+    <div class="text-right"><a type="button" class="btn btn-success" onclick="javascript:window.open('{{ path('tramite_flujo_movimientodia') }}',null,'height=500,width=700,status=no,toolbar=no,menubar=no,location=no,scrollbars=yes');"href="#">Imprimir</a></div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Movimientos del dia</h3>
+        </div>
+        <table class="table">
+            <thead>
+                <th>Numero Interno</th>
+                <th>Numero Comprobante</th>
+                <th>Detalle</th>
+                <th>Debe</th>
+                <th>Haber</th>
+                <th>Fecha Creacion</th>
+            </thead>
+            <tbody>
+                {% for movimiento in entity %}
+                    {% if movimiento.estado == 'CANCELADO' %}
+                    <tr>
+                        <td>{{ movimiento.tramite.numeroInterno }}</td>
+                        <td>{{ movimiento.id }}</td>
+                        <td>{{ movimiento.detalle }}</td>
+                        {% if movimiento.tipo == 'EGRESO'%}
+                            <td>{{movimiento.monto}}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        {% if movimiento.tipo == 'INGRESO'%}
+                            <td>{{ movimiento.monto }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td>{{ movimiento.fechaCreacion | date('d-m-Y') }}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

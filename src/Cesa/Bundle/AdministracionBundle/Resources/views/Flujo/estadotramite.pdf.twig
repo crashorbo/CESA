@@ -1,0 +1,100 @@
+<pdf>
+    <dynamic-page>
+        <table>
+            <tr>
+                <td>
+                    Consultores Especializados en Servicios Aduaneros "CESA"
+                </td>
+                <td text-align="right" >
+                    {{ fecha }}
+                </td>
+            </tr>
+        </table>
+        <br /><br />
+        <table>
+            <tr>
+                <td><b>Numero Interno: </b></td>
+                <td>{{ entity.numeroInterno }}</td>
+            </tr>
+            <tr>
+                <td><b>Numero de Carpeta: </b></td>
+                <td>{{ entity.numeroCarpeta }}</td>
+            </tr>
+            <tr>
+                <td><b>Tipo: </b></td>
+                <td>{{ entity.tipo }}</td>
+            </tr>
+            <tr>
+                <td><b>Cliente: </b></td>
+                <td>{{ entity.cliente }}</td>
+            </tr>
+            <tr>
+                <td><b>Placa: </b></td>
+                <td>{{ entity.placa }}</td>
+            </tr>
+            <tr>
+                <td><b>Numero de C: </b></td>
+                <td>{{ entity.NumeroC }}</td>
+            </tr>
+            <tr>
+                <td><b>Canal: </b></td>
+                <td>{{ entity.canal }}</td>
+            </tr>
+            <tr>
+                <td><b>Fecha de Validacion: </b></td>
+                <td>{{ entity.fechaVC }}</td>
+            </tr>
+            <tr>
+                <td><b>Vista: </b></td>
+                <td>{{ entity.vista }}</td>
+            </tr>
+            <tr>
+                <td><b>Aforo: </b></td>
+                <td>{{ entity.aforo }}</td>
+            </tr>
+            <tr>
+                <td><b>Levante: </b></td>
+                <td>{{ entity.levante }}</td>
+            </tr>
+        </table>
+        <br/><br/>
+        <table>
+            <tr color="white" border.color="black" background.color="black" text-align="center">
+                <td>Numero Comprobante</td>
+                <td>Detalle</td>
+                <td>Debe</td>
+                <td>Haber</td>
+                <td>Fecha Creacion</td>
+            </tr>
+            {% set tegreso = 0 %}
+            {% set tingreso = 0 %}
+            {% for movimiento in entity.movimientos %}
+                {% if movimiento.estado == 'CANCELADO' %}
+                    <tr>
+                        <td>{{ movimiento.id }}</td>
+                        <td>{{ movimiento.detalle }}</td>
+                        {% if movimiento.tipo == 'EGRESO'%}
+                            <td>{{movimiento.monto}}</td>
+                            {% set tegreso = tegreso + movimiento.monto  %}
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        {% if movimiento.tipo == 'INGRESO'%}
+                            <td>{{ movimiento.monto }}</td>
+                            {% set tingreso = tingreso + movimiento.monto  %}
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td>{{ movimiento.fechaCreacion | date('d-m-Y') }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            <tr>
+                <td color="white" border.color="black" background.color="black" text-align="center"></td>
+                <td color="white" border.color="black" background.color="black" text-align="right">TOTAL</td>
+                <td>{{ tegreso }}</td>
+                <td>{{ tingreso }}</td>
+            </tr>
+        </table>
+    </dynamic-page>
+</pdf>

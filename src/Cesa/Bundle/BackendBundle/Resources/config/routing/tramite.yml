@@ -1,0 +1,15 @@
+backend_tramite_home:
+  pattern:  /
+  defaults: { _controller: BackendBundle:Tramite:index }
+
+backend_tramite_nuevo:
+  pattern:  /nuevo
+  defaults: { _controller: BackendBundle:Tramite:nuevo }
+
+backend_tramite_guardar:
+  pattern:  /guardar/{cliente_id}
+  defaults: { _controller: BackendBundle:Tramite:guardar }
+
+backend_tramite_bcliente:
+  pattern:  /bcliente
+  defaults: { _controller: BackendBundle:Tramite:bcliente }

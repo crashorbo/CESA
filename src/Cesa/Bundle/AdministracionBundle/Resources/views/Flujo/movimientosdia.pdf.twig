@@ -1,0 +1,67 @@
+<pdf>
+    <dynamic-page>
+        <table>
+            <tr>
+                <td>
+                    Consultores Especializados en Servicios Aduaneros "CESA"
+                </td>
+                <td text-align="right" >
+                    {{ fecha }}
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr font-size="16" color="white" border.color="black" background.color="black" text-align="center">
+                <td>
+                    Lista de Movimientos del dia
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr color="white" border.color="black" background.color="black" text-align="center">
+                <td text-align="center">Numero Interno</td>
+                <td text-align="center">Numero Comprobante</td>
+                <td text-align="center">Detalle</td>
+                <td text-align="center">Debe</td>
+                <td text-align="center">Haber</td>
+                <td text-align="center">Fecha Creacion</td>
+            </tr>
+        </table>
+        <table>
+            {% set tegreso = 0 %}
+            {% set tingreso = 0 %}
+            {% for movimiento in entity %}
+                {% if movimiento.estado == 'CANCELADO' %}
+                    <tr>
+                        <td>{{ movimiento.tramite.numeroInterno }}</td>
+                        <td>{{ movimiento.id }}</td>
+                        <td>{{ movimiento.detalle }}</td>
+                        {% if movimiento.tipo == 'EGRESO'%}
+                            <td>{{movimiento.monto}}</td>
+                            {% set tegreso = tegreso + movimiento.monto  %}
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        {% if movimiento.tipo == 'INGRESO'%}
+                            <td>{{ movimiento.monto }}</td>
+                            {% set tingreso = tingreso + movimiento.monto  %}
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td>{{ movimiento.fechaCreacion | date('d-m-Y') }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            <tr>
+                <td color="white" border.color="black" background.color="black" text-align="center"></td>
+                <td color="white" border.color="black" background.color="black" text-align="center"></td>
+                <td color="white" border.color="black" background.color="black" text-align="right">TOTAL</td>
+                <td>{{ tegreso }}</td>
+                <td>{{ tingreso }}</td>
+            </tr>
+        </table>
+        <br/><br/>
+        {% set efectivo = tingreso - tegreso %}
+        Efectivo = {{ efectivo }} Bs.
+    </dynamic-page>
+</pdf>

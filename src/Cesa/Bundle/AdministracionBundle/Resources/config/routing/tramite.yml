@@ -1,0 +1,41 @@
+empleado_tramite_home:
+  pattern:  /
+  defaults: { _controller: AdministracionBundle:Tramite:index }
+
+empleado_tramite_nuevo:
+  pattern:  /nuevo
+  defaults: { _controller: AdministracionBundle:Tramite:nuevo }
+
+empleado_tramite_ver:
+  pattern:  /ver/{tramite_id}
+  defaults: { _controller: AdministracionBundle:Tramite:ver }
+
+empleado_tramite_bcliente:
+  pattern:  /bcliente
+  defaults: { _controller: AdministracionBundle:Tramite:bcliente }
+
+empleado_tramite_imprimir:
+  pattern:  /imprimir/{tramite_id}.{_format}
+  defaults: { _controller: AdministracionBundle:Tramite:imprimir, _format: pdf }
+  requirements:
+    _format: html|pdf
+
+empleado_tramite_agregardoc:
+  pattern:  /agregardoc/{id}
+  defaults: { _controller: AdministracionBundle:Tramite:agregardoc }
+
+empleado_tramite_agregargasto:
+  pattern:  /agregargasto/{id}
+  defaults: { _controller: AdministracionBundle:Tramite:agregargasto }
+
+empleado_tramite_remitir:
+  pattern:  /remitir/{id}
+  defaults: { _controller: AdministracionBundle:Tramite:remitir }
+
+empleado_tramite_anexo1:
+  pattern:  /anexo1/{id}
+  defaults: { _controller: AdministracionBundle:Tramite:anexo1 }
+
+empleado_tramite_anexo2:
+  pattern:  /anexo2/{id}
+  defaults: { _controller: AdministracionBundle:Tramite:anexo2 }

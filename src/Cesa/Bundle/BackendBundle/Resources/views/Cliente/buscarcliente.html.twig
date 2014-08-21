@@ -1,0 +1,38 @@
+<h3>Lista de Clientes</h3>
+
+<table class="table striped-table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Nombres</th>
+        <th>Apellido Paterno</th>
+        <th>Apellido Materno</th>
+        <th>Tipo Documento</th>
+        <th>Numero Documento</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td>{{ entity.id }}</td>
+            <td>{{ entity.nombres }}</td>
+            <td>{{ entity.apellidoPaterno }}</td>
+            <td>{{ entity.apellidoMaterno }}</td>
+            <td>{{ entity.tipoDocumento }}</td>
+            <td>{{ entity.numeroDocumento }}</td>
+            <td>
+                {% if entity.estado == 1 %}
+                    ACTIVO
+                {% else %}
+                    DESACTIVADO
+                {% endif %}
+            </td>
+            <td>
+                <a type="button" class="btn btn-warning" href="{{ path('backend_empleado_ver', { 'empleado_id': entity.id }) }}">Ver</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

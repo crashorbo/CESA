@@ -1,0 +1,20 @@
+backend:
+    resource: "@BackendBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
+frontend:
+    resource: "@FrontendBundle/Resources/config/routing.yml"
+    prefix:   /
+
+tramite:
+    resource: "@TramiteBundle/Resources/config/routing.yml"
+    prefix:   /
+
+administracion:
+    resource: "@AdministracionBundle/Resources/config/routing.yml"
+    prefix:   /empleado
+
+cliente:
+    resource: "@ClienteBundle/Resources/config/routing.yml"
+    prefix:   /cliente
+

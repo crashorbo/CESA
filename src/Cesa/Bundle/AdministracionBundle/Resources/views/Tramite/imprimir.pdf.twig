@@ -1,0 +1,62 @@
+<pdf>
+    <dynamic-page>
+        <h1>Consultores Especializados en Servicios Aduaneros "CESA"</h1>
+        <div color="white" border.color="black" background.color="black" padding-left="10">Datos del Tramite</div>
+        <table>
+            <tr>
+                <td width="120" height="12" padding-left="10"><b>Numero Interno: </b></td>
+                <td padding-left="10">{{ entity.numeroInterno }}</td>
+            </tr>
+            <tr>
+                <td width="120" height="12" padding-left="10"><b>Numero de Carpeta: </b></td>
+                <td padding-left="10">{{ entity.numeroCarpeta }}</td>
+            </tr>
+            <tr>
+                <td width="120" height="12" padding-left="10"><b>Tipo: </b></td>
+                <td padding-left="10">{{ entity.tipo }}</td>
+            </tr>
+            <tr>
+                <td width="120" height="12" padding-left="10"><b>Cliente: </b></td>
+                <td padding-left="10">{{ entity.cliente }}</td>
+            </tr>
+            <tr>
+                <td width="120" height="12" padding-left="10"><b>Placa: </b></td>
+                <td padding-left="10">{{ entity.placa }}</td>
+            </tr>
+        </table>
+        <br /><br/>
+        <div color="white" border.color="black" background.color="black" padding-left="10">Documentos Presentados</div>
+        <table>
+            <tr color="white" border.color="black" background.color="black" padding-left="10">
+                <td height="12" padding-left="10"><b>Codigo</b></td>
+                <td padding-left="10">Descripcion</td>
+                <td height="12" padding-left="10">Fecha</td>
+                <td height="12" padding-left="10">Tipo</td>
+            </tr>
+            {% for tramitedoc in entity.tramiteDocumentos %}
+                <tr>
+                    <td height="12" padding-left="5"><b>{{ tramitedoc.documento.codigo }}</b></td>
+                    <td padding-left="10">{{ tramitedoc.documento.descripcion }}</td>
+                    <td height="12" padding-left="10">{{ tramitedoc.fechaPresentacion | date('d-m-Y')}}</td>
+                    <td height="12" padding-left="10">{{ tramitedoc.tipoDocumento }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br/><br/>
+        <div color="white" border.color="black" background.color="black" padding-left="10">Gastos Tramite</div>
+        <table>
+            <tr color="white" border.color="black" background.color="black" padding-left="10">
+                <td padding-left="10">Descripcion</td>
+                <td height="12" padding-left="10">Fecha</td>
+                <td height="12" padding-left="10">Monto</td>
+            </tr>
+            {% for movimiento in entity.movimientos %}
+                <tr>
+                    <td padding-left="10"><b>{{ movimiento.detalle }}</b></td>
+                    <td padding-left="10"><b>{{ movimiento.fechaCreacion | date('d-m-Y') }}</b></td>
+                    <td height="12" padding-left="10">{{ movimiento.monto }} Bs.</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </dynamic-page>
+</pdf>

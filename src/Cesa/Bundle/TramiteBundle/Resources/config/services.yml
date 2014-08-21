@@ -1,0 +1,7 @@
+parameters:
+#    tramite.example.class: Cesa\Bundle\TramiteBundle\Example
+
+services:
+#    tramite.example:
+#        class: %tramite.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

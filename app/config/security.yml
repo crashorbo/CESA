@@ -1,0 +1,63 @@
+security:
+
+    firewalls:
+      #firewall de la parte de administracion o backend
+      backend:
+        pattern:        ^/admin
+        provider:       administradores
+        anonymous:      ~
+        form_login:
+            login_path: /admin/login
+            check_path: /admin/login_check
+        logout:
+            path:       /admin/logout
+            target:     /
+
+      empleado:
+        pattern:        ^/empleado
+        provider:       empleados
+        anonymous:      ~
+        form_login:
+          login_path:   /empleado/login
+          check_path:   /empleado/login_check
+        logout:
+          path:         /empleado/logout
+          target:       /
+
+      cliente:
+        pattern:        ^/cliente
+        provider:       clientes
+        anonymous:      ~
+        form_login:
+          login_path:   /cliente/login
+          check_path:   /cliente/login_check
+        logout:
+          path:         /cliente/logout
+          target:       /
+
+    access_control:
+      - { path: ^/admin/login,      roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/admin/*,          roles: ROLE_ADMIN }
+      - { path: ^/empleado/login,   roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/emplenkeado/*,       roles: ROLE_EMPLEADO }
+      - { path: ^/cliente/login,   roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/cliente/*,       roles: ROLE_CLIENTE }
+
+    encoders:
+      Cesa\Bundle\BackendBundle\Entity\Usuario:         { algorithm: sha512, iterations: 10 }
+      Cesa\Bundle\AdministracionBundle\Entity\Empleado: { algorithm: sha512, iterations: 10 }
+      Cesa\Bundle\ClienteBundle\Entity\Cliente:         { algorithm: sha512, iterations: 10 }
+      Symfony\Component\Security\Core\User\User:          sha512
+
+    providers:
+      administradores:
+        entity: { class: Cesa\Bundle\BackendBundle\Entity\Usuario, property: username }
+
+      empleados:
+        entity: { class: Cesa\Bundle\AdministracionBundle\Entity\Empleado, property: username }
+
+      clientes:
+        entity: { class: Cesa\Bundle\ClienteBundle\Entity\Cliente, property: username }
+
+    role_hierarchy:
+      ROLE_ADMIN: [ROLE_EMPLEADO, ROLE_ALLOWED_TO_SWITCH]

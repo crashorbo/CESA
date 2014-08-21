@@ -1,0 +1,25 @@
+empleado_home:
+  pattern:  /
+  defaults: { _controller: AdministracionBundle:Default:index }
+
+empleado_login:
+  pattern:  /login
+  defaults:   { _controller: AdministracionBundle:Default:login }
+
+empleado_login_check:
+  pattern:  /login_check
+
+empleado_logout:
+  pattern:  /logout
+
+empleado_cliente:
+  resource: "@AdministracionBundle/Resources/config/routing/cliente.yml"
+  prefix:   /cliente
+
+empleado_tramite:
+  resource: "@AdministracionBundle/Resources/config/routing/tramite.yml"
+  prefix:   /tramite
+
+empleado_flujo:
+  resource: "@AdministracionBundle/Resources/config/routing/flujo.yml"
+  prefix:   /flujo

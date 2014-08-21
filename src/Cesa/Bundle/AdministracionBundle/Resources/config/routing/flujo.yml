@@ -1,0 +1,41 @@
+tramite_flujo_buscar:
+  pattern:  /buscar
+  defaults: { _controller:  AdministracionBundle:Flujo:buscar }
+
+tramite_flujo_busqueda:
+  pattern:  /busqueda
+  defaults: { _controller:  AdministracionBundle:Flujo:busqueda }
+
+tramite_flujo_tramite:
+  pattern:  /tramite/{id}
+  defaults: { _controller:  AdministracionBundle:Flujo:tramite }
+
+tramite_flujo_desembolsar:
+  pattern:  /desembolsar/{id}
+  defaults: { _controller:  AdministracionBundle:Flujo:desembolsar }
+
+tramite_flujo_desembolso:
+  pattern:  /desembolso/{id}.{_format}
+  defaults: { _controller: AdministracionBundle:Flujo:desembolso, _format: pdf }
+  requirements:
+    _format: html|pdf
+
+tramite_flujo_estadotramite:
+  pattern:  /estadotramite/{id}.{_format}
+  defaults: { _controller: AdministracionBundle:Flujo:estadotramite, _format: pdf }
+  requirements:
+    _format: html|pdf
+
+tramite_flujo_movimientosdia:
+  pattern:  /movimientosdia
+  defaults: { _controller: AdministracionBundle:Flujo:movimientosdia }
+
+tramite_flujo_movimientodia:
+  pattern:  /movimientodia.{_format}
+  defaults: { _controller: AdministracionBundle:Flujo:movimientodia, _format: pdf }
+  requirements:
+    _format: html|pdf
+
+tramite_flujo_agregaringreso:
+  pattern:  /agregaringreso/{id}
+  defaults: { _controller: AdministracionBundle:Flujo:agregaringreso }

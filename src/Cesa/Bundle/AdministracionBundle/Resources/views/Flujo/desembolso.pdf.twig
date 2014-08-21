@@ -1,0 +1,59 @@
+<pdf>
+    <dynamic-page>
+        <table>
+            <tr>
+                <td>
+                    Consultores Especializados en Servicios Aduaneros "CESA"
+                </td>
+                <td text-align="right" >
+                    {{ fecha }}
+                </td>
+            </tr>
+        </table>
+        <br /><br />
+        <table>
+            <tr font-size="16" color="white" border.color="black" background.color="black" text-align="center">
+                <td>
+                    COMPROBANTE DE {% if entity.tipo == 'EGRESO' %}DESEMBOLSO{% else %}PAGO{% endif %} N° {{ entity.id }}
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td width="100"><b>Numero Interno: </b></td>
+                <td>{{ entity.tramite.numeroInterno }}</td>
+            </tr>
+            <tr>
+                <td><b>Numero de Carpeta: </b></td>
+                <td>{{ entity.tramite.numeroCarpeta }}</td>
+            </tr>
+            <tr>
+                <td><b>Cliente:</b></td>
+                <td>{{ entity.tramite.cliente }}</td>
+            </tr>
+        </table>
+        <br /><br />
+        <table>
+            <tr color="white" border.color="black" background.color="black" text-align="center">
+                <td>DETALLE</td>
+                <td width="100" text-align="center">MONTO</td>
+            </tr>
+            <tr>
+                <td>{{ entity.detalle }}</td>
+                <td text-align="right">{{ entity.monto }}</td>
+            </tr>
+            <tr>
+                <td color="white" border.color="black" background.color="black" text-align="right">
+                    TOTAL
+                </td>
+                <td text-align="right">
+                    {{ entity.monto }}
+                </td>
+            </tr>
+        </table>
+        <br/><br/><br/><br/><br/>
+        <div>
+            NOMBRE Y FIRMA CAJERO
+        </div>
+    </dynamic-page>
+</pdf>

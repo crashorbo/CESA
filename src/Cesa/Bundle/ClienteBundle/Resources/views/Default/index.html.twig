@@ -1,0 +1,57 @@
+{% extends '::administracion.html.twig' %}
+
+{% block navprin %}
+    <li><a href="#">Perfil</a></li>
+    <li><a href="{{ path('empleado_logout') }}">Cerrar Sesion</a></li>
+{% endblock %}
+
+{% block nevegacion %}
+    <li class="active"><a href="{{ path('empleado_home') }}">Inicio</a></li>
+{% endblock %}
+
+{% block contenido %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Buscar Tramite">
+                </div>
+                <button type="submit" class="btn btn-default">Buscar</button>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-2">
+
+        </div>
+    </div>
+    <div class="row">
+        <h3>Lista de Tramites</h3>
+
+        <table class="table striped-table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Numero Interno</th>
+                <th>Numero Carpeta</th>
+
+                <th>Fecha de Recepcion</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.id }}</td>
+                    <td>{{ entity.numeroInterno }}</td>
+                    <td>{{ entity.numeroCarpeta }}</td>
+                    <td>{{ entity.fechaInicio|date('d-m-Y') }}</td>
+                    <td>
+                        <a type="button" class="btn btn-warning" href="{{ path('cliente_tramite_ver', {'id': entity.id }) }}">Ver</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

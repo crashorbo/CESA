@@ -1,0 +1,17 @@
+cliente_home:
+  pattern:  /
+  defaults: { _controller: ClienteBundle:Default:index }
+
+cliente_login:
+  pattern:  /login
+  defaults:   { _controller: ClienteBundle:Default:login }
+
+cliente_login_check:
+  pattern:  /login_check
+
+cliente_logout:
+  pattern:  /logout
+
+cliente_tramite_ver:
+  pattern:  /ver/{id}
+  defaults: { _controller: ClienteBundle:Default:ver }

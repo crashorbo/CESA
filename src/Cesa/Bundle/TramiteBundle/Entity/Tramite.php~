@@ -1,0 +1,153 @@
+<?php
+
+namespace Cesa\Bundle\TramiteBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Tramite
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Cesa\Bundle\TramiteBundle\Entity\TramiteRepository")
+ */
+class Tramite
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numero_interno", type="string", length=20)
+     */
+    protected $numeroInterno;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numero_carpeta", type="string", length=20)
+     */
+    protected $numeroCarpeta;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_inicio", type="date")
+     */
+    protected $fechaInicio;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_fin", type="date")
+     */
+    protected $fechaFin;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipo", type="string", length=20)
+     */
+    protected $tipo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="placa", type="string", length=20)
+     */
+    protected $placa;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="string", length=50)
+     */
+    protected $estado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="canal", type="string", length=20)
+     */
+    protected $canal;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="vista", type="string", length=255)
+     */
+    protected $vista;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="aforo", type="string", length=20)
+     */
+    protected $aforo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="levante", type="string", length=50)
+     */
+    protected $levante;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="total", type="float")
+     */
+    protected $total;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="saldo", type="float")
+     */
+    protected $saldo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="date")
+     */
+    protected $fechaCreacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="date")
+     */
+    protected $fechaModificacion;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="activo", type="boolean")
+     */
+    protected $activo;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Cesa\Bundle\ClienteBundle\Entity\Cliente")
+     */
+    protected $cliente;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Cesa\Bundle\TramiteBundle\Entity\TramiteDocumento", mappedBy="tramite")
+     */
+    protected $tramiteDocumentos;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Cesa\Bundle\TramiteBundle\Entity\Movimiento", mappedBy="tramite")
+     *
+     */
+    protected $movimientos;
+
+    
+}

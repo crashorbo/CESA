@@ -1,0 +1,199 @@
+{% extends '::administracion.html.twig' %}
+
+
+{% block navprin %}
+    <li><a href="#">Perfil</a></li>
+    <li><a href="{{ path('empleado_logout') }}">Cerrar Sesion</a></li>
+{% endblock %}
+
+{% block nevegacion %}
+    <li><a href="{{ path('empleado_home') }}">Inicio</a></li>
+    {% if usuario.cargo == 'CAJERO' %}
+        <li class="dropdown active">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Flujo de Efectivo<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="{{ path('tramite_flujo_buscar') }}">Buscar Tramite</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ path('tramite_flujo_movimientosdia') }}">Reporte Movimientos del Dia</a></li>
+
+            </ul>
+        </li>
+    {% else%}
+        {% if usuario.cargo == 'ADMINISTRADOR' %}
+            <li><a href="{{ path('empleado_cliente_home') }}">Cliente</a></li>
+        {% endif %}
+        <li><a href="{{ path('empleado_tramite_home') }}">Tramite</a></li>
+    {% endif %}
+{% endblock %}
+
+{% block contenido %}
+    <div class="row">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+            <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#ingreso" href="">Agregar Ingreso</a>
+            <a type="button" class="btn btn-primary" onclick="javascript:window.open('{{ path('tramite_flujo_estadotramite', {'id': entity.id}) }}',null,'height=500,width=700,status=no,toolbar=no,menubar=no,location=no,scrollbars=yes');" href="#">Imprimir</a>
+        </div>
+        <div class="col-md-2">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Datos del Tramite</h3>
+                </div>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><b>Numero Interno: </b></td>
+                            <td>{{ entity.numeroInterno }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Numero de Carpeta: </b></td>
+                            <td>{{ entity.numeroCarpeta }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Tipo: </b></td>
+                            <td>{{ entity.tipo }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Cliente: </b></td>
+                            <td>{{ entity.cliente }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-2">
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Egresos</h3>
+                </div>
+                <table class="table">
+                    <thead>
+                    <th>Detalle</th>
+                    <th>Fecha</th>
+                    <th>Monto</th>
+                    <th>Acciones</th>
+                    </thead>
+                    <tbody>
+                    {% for movimiento in entity.movimientos %}
+                        {% if movimiento.tipo == 'EGRESO' %}
+                            <tr>
+                                <td>{{ movimiento.detalle }}</td>
+                                <td>{{ movimiento.fechaCreacion | date('d-m-Y') }}</td>
+                                <td>{{ movimiento.monto }}</td>
+                                {% if movimiento.estado == 'TRANSITO' %}
+                                    <td>
+                                        <a type="button" class="btn btn-warning btn-xs" href="{{ path('tramite_flujo_desembolsar',{'id' : movimiento.id }) }}">Desembolsar</a>
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        <span class="label label-primary">Desembolsado</span>
+                                        <a type="button" class="btn btn-default btn-xs" onclick="javascript:window.open('{{ path('tramite_flujo_desembolso', {'id': movimiento.id}) }}',null,'height=500,width=700,status=no,toolbar=no,menubar=no,location=no,scrollbars=yes');" href="#">Imprimir</a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ingresos</h3>
+                </div>
+                <table class="table">
+                    <thead>
+                    <th>Detalle</th>
+                    <th>Fecha</th>
+                    <th>Monto</th>
+                    <th>Acciones</th>
+                    </thead>
+                    <tbody>
+                    {% for movimiento in entity.movimientos %}
+                        {% if movimiento.tipo == 'INGRESO' %}
+                            <tr>
+                                <td>{{ movimiento.detalle }}</td>
+                                <td>{{ movimiento.fechaCreacion | date('d-m-Y') }}</td>
+                                <td>{{ movimiento.monto }}</td>
+                                {% if movimiento.estado == 'TRANSITO' %}
+                                    <td>
+                                        <a type="button" class="btn btn-warning btn-xs" href="{{ path('tramite_flujo_desembolsar',{'id' : movimiento.id }) }}">Desembolsar</a>
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        <span class="label label-primary">Cancelado</span>
+                                        <a type="button" class="btn btn-default btn-xs" onclick="javascript:window.open('{{ path('tramite_flujo_desembolso', {'id': movimiento.id}) }}',null,'height=500,width=700,status=no,toolbar=no,menubar=no,location=no,scrollbars=yes');" href="#">Imprimir</a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="ingreso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Agregar Ingreso</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" action="{{ path('tramite_flujo_agregaringreso', { 'id' : entity.id }) }}" method="POST" {{ form_enctype(form1) }} role="form">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Descripcion</label>
+                            <div class="col-sm-10">
+                                {{ form_errors(form1.detalle) }}
+                                {{ form_widget(form1.detalle, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Monto</label>
+                            <div class="col-sm-4">
+                                {{ form_errors(form1.costo) }}
+                                {{ form_widget(form1.costo, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                            <label for="inputEmail3" class="col-sm-1 control-label">Bolivianos</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Agregar</button>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+{% endblock %}
